@@ -35,6 +35,7 @@ class ReadMoreText extends StatefulWidget {
     this.callback,
     this.onLinkPressed,
     this.linkTextStyle,
+    this.selectable = false,
   }) : super(key: key);
 
   /// Used on TrimMode.Length
@@ -85,6 +86,7 @@ class ReadMoreText extends StatefulWidget {
   final double? textScaleFactor;
   final String? semanticsLabel;
   final TextStyle? delimiterStyle;
+  final bool? selectable;
 
   @override
   ReadMoreTextState createState() => ReadMoreTextState();
@@ -277,7 +279,20 @@ class ReadMoreTextState extends State<ReadMoreText> {
                 'TrimMode type: ${widget.trimMode} is not supported');
         }
 
-        return Text.rich(
+        return widget.selectable ? SelectableText.rich(
+          TextSpan(
+            children: [
+              if (preTextSpan != null) preTextSpan,
+              textSpan,
+              if (postTextSpan != null) postTextSpan,
+            ],
+          ),
+          textAlign: textAlign,
+          textDirection: textDirection,
+          //softWrap: true,
+          //overflow: TextOverflow.clip,
+          textScaleFactor: textScaleFactor,
+        ) : Text.rich(
           TextSpan(
             children: [
               if (preTextSpan != null) preTextSpan,
